@@ -7,6 +7,7 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+$is_kantor_pusat = ($_SESSION['id_cabang'] == 'KC001');
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 $query = "SELECT * FROM pelanggan WHERE id_pelanggan = ?";
 $stmt = mysqli_prepare($conn, $query);
@@ -58,9 +59,10 @@ $result_cabang = mysqli_query($conn, $query_cabang);
 <head>
     <meta charset="UTF-8">
     <title>Edit Pelanggan</title>
-    <!--Booststrap-->
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--Font Amazing-->
+    <!--Fontawesome-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
@@ -92,20 +94,28 @@ $result_cabang = mysqli_query($conn, $query_cabang);
                         <label class="form-label">Email:</label>
                         <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data['email']) ?>" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Kantor Cabang:</label>
-                        <select name="id_cabang" class="form-select" required>
-                            <?php while ($cabang = mysqli_fetch_assoc($result_cabang)) { 
-                                $selected = ($cabang['id_cabang'] == $data['id_cabang']) ? 'selected' : '';
-                            ?>
-                                <option value="<?= $cabang['id_cabang'] ?>" <?= $selected ?>>
-                                    <?= htmlspecialchars($cabang['nama_cabang']) ?>
-                                </option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <button type="submit" name="submit" class="btn btn-primary">Update</button>
-                    <a href="list.php" class="btn btn-secondary">Kembali</a>
+                    <?php if ($is_kantor_pusat): ?>
+                        <div class="mb-3">
+                            <label class="form-label">Kantor Cabang:</label>
+                            <select name="id_cabang" class="form-select" required>
+                                <?php while ($cabang = mysqli_fetch_assoc($result_cabang)): 
+                                    $selected = ($cabang['id_cabang'] == $data['id_cabang']) ? 'selected' : '';
+                                ?>
+                                    <option value="<?= $cabang['id_cabang'] ?>" <?= $selected ?>>
+                                        <?= htmlspecialchars($cabang['nama_cabang']) ?>
+                                    </option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                    <?php else: ?>
+                        <input type="hidden" name="id_cabang" value="<?= $_SESSION['id_cabang'] ?>">
+                    <?php endif; ?>
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Update
+                    </button>
+                    <a href="list.php" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
                 </form>
             </div>
         </div>

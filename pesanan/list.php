@@ -16,11 +16,17 @@ $result = mysqli_query($conn, $query);
     <meta charset="UTF-8">
     <title>Data Pesanan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link rel="stylesheet" href="..\assets\font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-item nav-link text-white"><i class="fa fa-user"></i> <?= htmlspecialchars($_SESSION['id_cabang']) ?></span>
+                <a class="nav-item nav-link" href="../logout.php"> Logout</a>
+            </div>
         </div>
     </nav>
 
@@ -35,7 +41,7 @@ $result = mysqli_query($conn, $query);
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Data Pesanan</h2>
-            <a href="tambah.php" class="btn btn-primary">Tambah Pesanan</a>
+            <a href="tambah.php" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Pesanan</a>
         </div>
 
         <div class="table-responsive">
@@ -61,8 +67,8 @@ $result = mysqli_query($conn, $query);
                         <td><?= htmlspecialchars($row['status_barang']) ?></td>
                         <td><?= $row['tanggal_pemesanan'] ?></td>
                         <td>
-                            <a href="edit.php?id=<?= $row['id_pesanan'] ?>" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="hapus.php?id=<?= $row['id_pesanan'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</a>
+                            <a href="edit.php?id=<?= $row['id_pesanan'] ?>" class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="hapus.php?id=<?= $row['id_pesanan'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')"><i class="fa fa-trash-o fa-fw"></i> Hapus</a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -70,7 +76,9 @@ $result = mysqli_query($conn, $query);
             </table>
         </div>
         
-        <a href="../index.php" class="btn btn-secondary">Kembali</a>
+        <a href="../dashboard.php" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> Kembali
+        </a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -24,12 +24,15 @@ $result = mysqli_query($conn, $query);
 <head>
     <meta charset="UTF-8">
     <title>Data Pengiriman</title>
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
         </div>
     </nav>
 
@@ -53,7 +56,7 @@ $result = mysqli_query($conn, $query);
                         <option value="Terkirim" <?= $status_filter == 'Terkirim' ? 'selected' : '' ?>>Terkirim</option>
                     </select>
                 </form>
-                <a href="tambah.php" class="btn btn-primary">Tambah Pengiriman</a>
+                <a href="tambah.php" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Pengiriman</a>
             </div>
         </div>
 
@@ -80,8 +83,12 @@ $result = mysqli_query($conn, $query);
                         <td><?= $row['tanggal_sampai'] ?? 'Belum sampai' ?></td>
                         <td><?= htmlspecialchars($row['status_pengiriman']) ?></td>
                         <td>
-                            <a href="detail.php?id=<?= $row['id_pengiriman'] ?>" class="btn btn-info btn-sm">Detail</a>
-                            <a href="edit.php?id=<?= $row['id_pengiriman'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="detail.php?id=<?= $row['id_pengiriman'] ?>" class="btn btn-info btn-sm">
+                                <i class="fa fa-info-circle"></i> Detail
+                            </a>
+                            <a href="edit.php?id=<?= $row['id_pengiriman'] ?>" class="btn btn-warning btn-sm">
+                                <i class="fa fa-pencil"></i> Edit
+                            </a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -89,7 +96,9 @@ $result = mysqli_query($conn, $query);
             </table>
         </div>
 
-        <a href="../index.php" class="btn btn-secondary">Kembali</a>
+        <a href="../dashboard.php" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> Kembali
+        </a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

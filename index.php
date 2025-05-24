@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +9,41 @@
     <title>Login - Padjadjaran Express</title>
     <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <!--Fontawesome-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
-    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Login Kantor Cabang
+                    </div>
+                    <div class="card-body">
+                        <?php
+                            if (isset($_SESSION['error'])) {
+                                echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error'] . '</div>';
+                                unset($_SESSION['error']); // Hapus pesan error dari sesi setelah ditampilkan
+                            }
+                        ?>
+                        <form action="proses_login.php" method="POST">
+                            <div class="mb-3">
+                                <label for="id_cabang" class="form-label">ID Cabang</label>
+                                <input type="text" class="form-control" id="id_cabang" name="id_cabang" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

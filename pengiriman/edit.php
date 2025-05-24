@@ -46,12 +46,15 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <title>Update Status Pengiriman</title>
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
         </div>
     </nav>
 
@@ -70,8 +73,12 @@ if (isset($_POST['submit'])) {
                             <option value="Terkirim" <?= $pengiriman['status_pengiriman'] == 'Terkirim' ? 'selected' : '' ?>>Terkirim</option>
                         </select>
                     </div>
-                    <button type="submit" name="submit" class="btn btn-primary">Update</button>
-                    <a href="list.php" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Update
+                    </button> 
+                    <a href="list.php" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
                 </form>
             </div>
         </div>

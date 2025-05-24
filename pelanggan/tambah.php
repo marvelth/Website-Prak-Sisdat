@@ -2,12 +2,14 @@
     include '../config.php';
     session_start();
 
+    $is_kantor_pusat = ($_SESSION['id_cabang'] == 'KC001');
+
     if (isset($_POST['submit'])) {
         $nama_pelanggan = mysqli_real_escape_string($conn, $_POST['nama_pelanggan']);
         $alamat = mysqli_real_escape_string($conn, $_POST['alamat']);
         $telepon = mysqli_real_escape_string($conn, $_POST['telepon']);
         $email = mysqli_real_escape_string($conn, $_POST['email']);
-        $id_cabang = mysqli_real_escape_string($conn, $_POST['id_cabang']);
+        $id_cabang = mysqli_real_escape_string($conn, $_SESSION['id_cabang']);
 
         $query = "INSERT INTO pelanggan (nama_pelanggan, alamat, telepon, email, id_cabang) 
                     VALUES (?, ?, ?, ?, ?)";
@@ -30,8 +32,10 @@
     }
 
     // Fetch kantor cabang data buat dropdown
-    $query_cabang = "SELECT id_cabang, nama_cabang FROM kantor_cabang ORDER BY nama_cabang";
-    $result_cabang = mysqli_query($conn, $query_cabang);
+    if ($is_kantor_pusat) {
+        $query_cabang = "SELECT id_cabang, nama_cabang FROM kantor_cabang ORDER BY nama_cabang";
+        $result_cabang = mysqli_query($conn, $query_cabang);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -39,12 +43,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Tambah Pelanggan</title>
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
         </div>
     </nav>
 
@@ -71,20 +78,26 @@
                         <label class="form-label">Email:</label>
                         <input type="email" name="email" class="form-control" required>
                     </div>
-                    <div class="mb-3">
+                    <?php
+                    if ($is_kantor_pusat) {
+                    echo '<div class="mb-3">
                         <label for="id_cabang" class="form-label">Kantor Cabang:</label>
                         <select id="id_cabang" name="id_cabang" class="form-select" required>
-                            <option value="">Pilih Kantor Cabang</option>
-                            <?php
+                            <option value="">Pilih Kantor Cabang</option>';
                             while ($cabang = mysqli_fetch_assoc($result_cabang)) {
                                 echo '<option value="' . $cabang['id_cabang'] . '">' . 
                                         htmlspecialchars($cabang['nama_cabang']) . '</option>';
                             }
-                            ?>
-                        </select>
-                    </div>
-                    <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
-                    <a href="list.php" class="btn btn-secondary">Kembali</a>
+                        echo'</select>
+                    </div>';
+                    }
+                    ?>
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Simpan
+                    </button>
+                    <a href="list.php" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
                 </form>
             </div>
         </div>

@@ -36,12 +36,15 @@ $result_pelanggan = mysqli_query($conn, $query_pelanggan);
 <head>
     <meta charset="UTF-8">
     <title>Tambah Pesanan</title>
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
         </div>
     </nav>
 
@@ -71,8 +74,12 @@ $result_pelanggan = mysqli_query($conn, $query_pelanggan);
                         <label class="form-label">Berat (kg):</label>
                         <input type="number" step="0.1" name="berat" class="form-control" required>
                     </div>
-                    <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
-                    <a href="list.php" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Simpan
+                    </button>
+                    <a href="list.php" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Kembali
+                    </a>
                 </form>
             </div>
         </div>
