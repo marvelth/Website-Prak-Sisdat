@@ -1,23 +1,49 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['id_cabang'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
 include("../config.php");
 
-// Base query for orders with customer info
-$query = "SELECT p.*, pl.nama_pelanggan 
-          FROM pesanan p 
-          JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan
-          ORDER BY p.tanggal_pemesanan DESC";
-$result = mysqli_query($conn, $query);
-?>
+$is_kantor_pusat = ($_SESSION['id_cabang'] == 'KC001');
 
+// Base query with branch info
+if ($is_kantor_pusat) {
+    $query = "SELECT p.*, pl.nama_pelanggan, kc.nama_cabang
+              FROM pesanan p 
+              JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan
+              JOIN kantor_cabang kc ON pl.id_cabang = kc.id_cabang
+              ORDER BY p.tanggal_pemesanan DESC";
+    $result = mysqli_query($conn, $query);
+} else {
+    $query = "SELECT p.*, pl.nama_pelanggan 
+              FROM pesanan p 
+              JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan
+              WHERE pl.id_cabang = ?
+              ORDER BY p.tanggal_pemesanan DESC";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $_SESSION['id_cabang']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+}
+
+// Check for query errors
+if (!$result) {
+    die("Error: " . mysqli_error($conn));
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Data Pesanan</title>
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--Fontawesome-->
-    <link rel="stylesheet" href="..\assets\font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
@@ -48,13 +74,16 @@ $result = mysqli_query($conn, $query);
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>ID Pesanan</th>
-                        <th>Pelanggan</th>
-                        <th>Nama Barang</th>
-                        <th>Berat (kg)</th>
-                        <th>Status</th>
-                        <th>Tanggal Pemesanan</th>
-                        <th>Aksi</th>
+                        <th><i class="fa fa-hashtag"></i> ID Pesanan</th>
+                        <th><i class="fa fa-user"></i> Pelanggan</th>
+                        <?php if ($is_kantor_pusat): ?>
+                        <th><i class="fa fa-building"></i> Cabang</th>
+                        <?php endif; ?>
+                        <th><i class="fa fa-box"></i> Nama Barang</th>
+                        <th><i class="fa fa-weight-scale"></i> Berat (kg)</th>
+                        <th><i class="fa fa-info-circle"></i> Status</th>
+                        <th><i class="fa fa-calendar"></i> Tanggal Pemesanan</th>
+                        <th><i class="fa fa-gears"></i> Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,6 +91,9 @@ $result = mysqli_query($conn, $query);
                     <tr>
                         <td><?= $row['id_pesanan'] ?></td>
                         <td><?= htmlspecialchars($row['nama_pelanggan']) ?></td>
+                        <?php if ($is_kantor_pusat): ?>
+                        <td><?= htmlspecialchars($row['nama_cabang']) ?></td>
+                        <?php endif; ?>
                         <td><?= htmlspecialchars($row['nama_barang']) ?></td>
                         <td><?= $row['berat'] ?></td>
                         <td><?= htmlspecialchars($row['status_barang']) ?></td>

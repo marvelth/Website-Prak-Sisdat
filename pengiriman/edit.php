@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
                         <label class="form-label">Status Pengiriman:</label>
                         <select name="status_pengiriman" class="form-select" required>
                             <option value="Menunggu Kurir" <?= $pengiriman['status_pengiriman'] == 'Menunggu Kurir' ? 'selected' : '' ?>>Menunggu Kurir</option>
-                            <option value="Dalam Perjalanan" <?= $pengiriman['status_pengiriman'] == 'Dalam Perjalanan' ? 'selected' : '' ?>>Dalam Perjalanan</option>
+                            <option value="Dalam Perjalanan" <?= $pengiriman['status_pengiriman'] == 'Dalam Pengiriman' ? 'selected' : '' ?>>Dalam Pengiriman</option>
                             <option value="Terkirim" <?= $pengiriman['status_pengiriman'] == 'Terkirim' ? 'selected' : '' ?>>Terkirim</option>
                         </select>
                     </div>

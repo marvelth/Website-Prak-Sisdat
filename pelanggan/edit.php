@@ -59,44 +59,56 @@ $result_cabang = mysqli_query($conn, $query_cabang);
 <head>
     <meta charset="UTF-8">
     <title>Edit Pelanggan</title>
-    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--Fontawesome-->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand" href="../index.php"><i class="fa fa-truck"></i> Padjadjaran Express</a>
         </div>
     </nav>
 
     <div class="container">
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-circle"></i> <?= htmlspecialchars($_SESSION['error']) ?>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['success'])): ?>
+            <div class="alert alert-success">
+                <i class="fa fa-check-circle"></i> <?= htmlspecialchars($_SESSION['success']) ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">Edit Pelanggan</h2>
+                <h2 class="card-title"><i class="fa fa-edit"></i> Edit Pelanggan</h2>
             </div>
             <div class="card-body">
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label">Nama:</label>
+                        <label class="form-label"><i class="fa fa-user"></i> Nama:</label>
                         <input type="text" name="nama_pelanggan" class="form-control" value="<?= htmlspecialchars($data['nama_pelanggan']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Alamat:</label>
+                        <label class="form-label"><i class="fa fa-location-dot"></i> Alamat:</label>
                         <textarea name="alamat" class="form-control" required rows="3"><?= htmlspecialchars($data['alamat']) ?></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">No. Telepon:</label>
+                        <label class="form-label"><i class="fa fa-phone"></i> No. Telepon:</label>
                         <input type="text" name="telepon" class="form-control" value="<?= htmlspecialchars($data['telepon']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Email:</label>
+                        <label class="form-label"><i class="fa fa-envelope"></i> Email:</label>
                         <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($data['email']) ?>" required>
                     </div>
                     <?php if ($is_kantor_pusat): ?>
                         <div class="mb-3">
-                            <label class="form-label">Kantor Cabang:</label>
+                            <label class="form-label"><i class="fa fa-building"></i> Kantor Cabang:</label>
                             <select name="id_cabang" class="form-select" required>
                                 <?php while ($cabang = mysqli_fetch_assoc($result_cabang)): 
                                     $selected = ($cabang['id_cabang'] == $data['id_cabang']) ? 'selected' : '';
@@ -111,7 +123,7 @@ $result_cabang = mysqli_query($conn, $query_cabang);
                         <input type="hidden" name="id_cabang" value="<?= $_SESSION['id_cabang'] ?>">
                     <?php endif; ?>
                     <button type="submit" name="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Update
+                        <i class="fa fa-floppy-disk"></i> Update
                     </button>
                     <a href="list.php" class="btn btn-secondary">
                         <i class="fa fa-arrow-left"></i> Kembali

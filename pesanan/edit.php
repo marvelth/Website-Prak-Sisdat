@@ -48,10 +48,8 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Pesanan</title>
-    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--Fontawesome-->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
@@ -61,22 +59,29 @@ if (isset($_POST['submit'])) {
     </nav>
 
     <div class="container">
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-circle"></i> <?= $_SESSION['error'] ?>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">Edit Pesanan</h2>
+                <h2 class="card-title"><i class="fa fa-edit"></i> Edit Pesanan</h2>
             </div>
             <div class="card-body">
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label">Nama Barang:</label>
+                        <label class="form-label"><i class="fa fa-box"></i> Nama Barang:</label>
                         <input type="text" name="nama_barang" class="form-control" value="<?= htmlspecialchars($pesanan['nama_barang']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Berat (kg):</label>
+                        <label class="form-label"><i class="fa fa-weight-scale"></i> Berat (kg):</label>
                         <input type="number" step="0.1" name="berat" class="form-control" value="<?= $pesanan['berat'] ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Status:</label>
+                        <label class="form-label"><i class="fa fa-info-circle"></i> Status:</label>
                         <select name="status_barang" class="form-select" required>
                             <option value="Diproses" <?= $pesanan['status_barang'] == 'Diproses' ? 'selected' : '' ?>>Diproses</option>
                             <option value="Dikirim" <?= $pesanan['status_barang'] == 'Dikirim' ? 'selected' : '' ?>>Dikirim</option>
@@ -84,7 +89,7 @@ if (isset($_POST['submit'])) {
                         </select>
                     </div>
                     <button type="submit" name="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Update
+                        <i class="fa fa-floppy-disk"></i> Update
                     </button>
                     <a href="list.php" class="btn btn-secondary">
                         <i class="fa fa-arrow-left"></i> Kembali

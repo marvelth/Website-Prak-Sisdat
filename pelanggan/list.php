@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: ../index.php");
+    exit();
+}
+
 include("../config.php");
 
 $is_kantor_pusat = ($_SESSION['id_cabang'] == 'KC001');
@@ -25,9 +34,10 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <title>Data Pelanggan</title>
+    <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--Fontawesome-->
-    <link rel="stylesheet" href="..\assets\font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.min.css">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
@@ -43,26 +53,34 @@ if (!$result) {
     <div class="container">
         <?php if (isset($_SESSION['success'])): ?>
             <div class="alert alert-success alert-dismissible fade show">
-                <?= $_SESSION['success'] ?>
+                <i class="fa fa-check-circle"></i> <?= $_SESSION['success'] ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
 
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show">
+                <i class="fa fa-exclamation-circle"></i> <?= $_SESSION['error'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Data Pelanggan</h2>
+            <h2><i class="fa fa-users"></i> Data Pelanggan</h2>
             <a href="tambah.php" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Pelanggan</a>
         </div>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <tr>
-                    <th>ID</th>
-                    <th>Nama</th>
-                    <th>Alamat</th>
-                    <th>No. Telepon</th>
-                    <th>Email</th>
-                    <th>Aksi</th>
+                    <th><i class="fa fa-id-card"></i> ID</th>
+                    <th><i class="fa fa-user"></i> Nama</th>
+                    <th><i class="fa fa-location-dot"></i> Alamat</th>
+                    <th><i class="fa fa-phone"></i> No. Telepon</th>
+                    <th><i class="fa fa-envelope"></i> Email</th>
+                    <th><i class="fa fa-gears"></i> Aksi</th>
                 </tr>
                 <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <tr>
