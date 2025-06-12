@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #003B73;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="../dashboard.php">
-                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="60" class="me-2">
+                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="30" class="me-2">
                 <span>Padjadjaran Express</span>
             </a>
             <div class="navbar-nav ms-auto">

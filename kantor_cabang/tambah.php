@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
     $id_cabang = mysqli_real_escape_string($conn, $_POST['id_cabang']);
     $nama_cabang = mysqli_real_escape_string($conn, $_POST['nama_cabang']);
     $alamat = mysqli_real_escape_string($conn, $_POST['alamat']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = mysqli_real_escape_string($conn, $_POST['password']); // Store password directly
 
     $query = "INSERT INTO kantor_cabang (id_cabang, nama_cabang, alamat, password) VALUES (?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $query);
