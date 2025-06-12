@@ -7,6 +7,15 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: ../index.php");
+    exit();
+}
+
+
 $id_pengiriman = mysqli_real_escape_string($conn, $_GET['id']);
 
 // Get delivery data
@@ -47,38 +56,63 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <title>Update Status Pengiriman</title>
     <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <!--Fontawesome-->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/font-awesome/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #003B73;">
         <div class="container">
-            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
+            <a class="navbar-brand d-flex align-items-center" href="../dashboard.php">
+                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="30" class="me-2">
+                <span>Padjadjaran Express</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-link">
+                    <i class="fa fa-building me-2"></i><?= htmlspecialchars($_SESSION['id_cabang']) ?>
+                </span>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Update Status Pengiriman</h2>
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="border-bottom pb-2">
+                    <i class="fas fa-edit me-2"></i>Update Status Pengiriman
+                </h2>
             </div>
+        </div>
+
+        <div class="card shadow-sm">
             <div class="card-body">
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label">Status Pengiriman:</label>
+                        <label class="form-label">
+                            <i class="fa fa-info-circle me-2"></i>Status Pengiriman:
+                        </label>
                         <select name="status_pengiriman" class="form-select" required>
-                            <option value="Menunggu Kurir" <?= $pengiriman['status_pengiriman'] == 'Menunggu Kurir' ? 'selected' : '' ?>>Menunggu Kurir</option>
-                            <option value="Dalam Perjalanan" <?= $pengiriman['status_pengiriman'] == 'Dalam Pengiriman' ? 'selected' : '' ?>>Dalam Pengiriman</option>
-                            <option value="Terkirim" <?= $pengiriman['status_pengiriman'] == 'Terkirim' ? 'selected' : '' ?>>Terkirim</option>
+                            <option value="Menunggu Kurir" <?= $pengiriman['status_pengiriman'] == 'Menunggu Kurir' ? 'selected' : '' ?>>
+                                Menunggu Kurir
+                            </option>
+                            <option value="Dalam Perjalanan" <?= $pengiriman['status_pengiriman'] == 'Dalam Pengiriman' ? 'selected' : '' ?>>
+                                Dalam Pengiriman
+                            </option>
+                            <option value="Terkirim" <?= $pengiriman['status_pengiriman'] == 'Terkirim' ? 'selected' : '' ?>>
+                                Terkirim
+                            </option>
                         </select>
                     </div>
-                    <button type="submit" name="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Update
-                    </button> 
-                    <a href="list.php" class="btn btn-secondary">
-                        <i class="fa fa-arrow-left"></i> Kembali
-                    </a>
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="submit" class="btn btn-primary shadow-sm">
+                            <i class="fa fa-save me-2"></i>Update
+                        </button>
+                        <a href="list.php" class="btn btn-secondary shadow-sm">
+                            <i class="fa fa-arrow-left me-2"></i>Kembali
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>

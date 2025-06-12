@@ -7,6 +7,14 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: ../index.php");
+    exit();
+}
+
 $id_pesanan = mysqli_real_escape_string($conn, $_GET['id']);
 
 // Get order data
@@ -48,52 +56,78 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Pesanan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!--Bootstrap-->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link rel="stylesheet" href="../assets/font-awesome/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #003B73;">
         <div class="container">
-            <a class="navbar-brand" href="../dashboard.php">Padjadjaran Express</a>
+            <a class="navbar-brand d-flex align-items-center" href="../dashboard.php">
+                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="60" class="me-2">
+                <span>Padjadjaran Express</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-link">
+                    <i class="fa fa-building me-2"></i><?= htmlspecialchars($_SESSION['id_cabang']) ?>
+                </span>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container py-4">
         <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger">
-                <i class="fa fa-exclamation-circle"></i> <?= $_SESSION['error'] ?>
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm">
+                <i class="fa fa-exclamation-circle me-2"></i><?= $_SESSION['error'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title"><i class="fa fa-edit"></i> Edit Pesanan</h2>
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="border-bottom pb-2">
+                    <i class="fas fa-edit me-2"></i>Edit Pesanan
+                </h2>
             </div>
+        </div>
+
+        <div class="card shadow-sm">
             <div class="card-body">
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-box"></i> Nama Barang:</label>
+                        <label class="form-label">
+                            <i class="fa fa-box me-2"></i>Nama Barang:
+                        </label>
                         <input type="text" name="nama_barang" class="form-control" value="<?= htmlspecialchars($pesanan['nama_barang']) ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-weight-scale"></i> Berat (kg):</label>
+                        <label class="form-label">
+                            <i class="fa fa-weight-scale me-2"></i>Berat (kg):
+                        </label>
                         <input type="number" step="0.1" name="berat" class="form-control" value="<?= $pesanan['berat'] ?>" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-info-circle"></i> Status:</label>
+                        <label class="form-label">
+                            <i class="fa fa-info-circle me-2"></i>Status:
+                        </label>
                         <select name="status_barang" class="form-select" required>
                             <option value="Diproses" <?= $pesanan['status_barang'] == 'Diproses' ? 'selected' : '' ?>>Diproses</option>
                             <option value="Dikirim" <?= $pesanan['status_barang'] == 'Dikirim' ? 'selected' : '' ?>>Dikirim</option>
                             <option value="Selesai" <?= $pesanan['status_barang'] == 'Selesai' ? 'selected' : '' ?>>Selesai</option>
                         </select>
                     </div>
-                    <button type="submit" name="submit" class="btn btn-primary">
-                        <i class="fa fa-floppy-disk"></i> Update
-                    </button>
-                    <a href="list.php" class="btn btn-secondary">
-                        <i class="fa fa-arrow-left"></i> Kembali
-                    </a>
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="submit" class="btn btn-primary shadow-sm">
+                            <i class="fa fa-save me-2"></i>Update
+                        </button>
+                        <a href="list.php" class="btn btn-secondary shadow-sm">
+                            <i class="fa fa-arrow-left me-2"></i>Kembali
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>

@@ -1,0 +1,125 @@
+:root {
+    --primary-color: #003B73;
+    --secondary-color: #0074B7;
+    --accent-color: #FF6B35; 
+    --light-color: #F8F9FA;
+    --dark-color: #222831;
+    --success-color: #00B074;
+    --warning-color: #FFB649;
+    --danger-color: #FF4C4C;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: var(--primary-color) !important;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-weight: 700;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white !important;
+}
+
+/* Card Styles */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-stats-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.card-stats-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.card-stats-accent {
+    background-color: var(--accent-color) !important;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+/* Table Styles */
+.table thead th {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(54, 48, 98, 0.05);
+}
+
+/* Form Styles */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(54, 48, 98, 0.25);
+}
+
+/* Alert Styles */
+.alert-primary {
+    background-color: rgba(54, 48, 98, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Dashboard Cards */
+.stats-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stats-icon {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    padding: 15px;
+    font-size: 24px;
+}
+
+/* Utilities */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.bg-gradient {
+    background: linear-gradient(145deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+}

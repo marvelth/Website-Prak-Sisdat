@@ -7,6 +7,14 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: ../index.php");
+    exit();
+}
+
 $id_kurir = mysqli_real_escape_string($conn, $_GET['id']);
 
 // Get courier data with vehicle and branch info
@@ -49,72 +57,107 @@ $pengiriman = mysqli_stmt_get_result($stmt_pengiriman);
 <head>
     <meta charset="UTF-8">
     <title>Detail Kurir</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--Bootstrap-->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link rel="stylesheet" href="../assets/font-awesome/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top" style="background-color: #003B73;">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">Padjadjaran Express</a>
+            <a class="navbar-brand d-flex align-items-center" href="../dashboard.php">
+                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="30" class="me-2">
+                <span>Padjadjaran Express</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="nav-link">
+                    <i class="fa fa-building me-2"></i><?= htmlspecialchars($_SESSION['id_cabang']) ?>
+                </span>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h3 class="card-title">Informasi Kurir</h3>
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="border-bottom pb-2">
+                    <i class="fas fa-user me-2"></i>Detail Kurir
+                </h2>
             </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-info-circle me-2"></i>Informasi Kurir
+                </h5>
                 <table class="table">
-                    <tr><td width="200">Nama:</td><td><?= htmlspecialchars($kurir['nama_kurir']) ?></td></tr>
-                    <tr><td>Telepon:</td><td><?= htmlspecialchars($kurir['no_telepon']) ?></td></tr>
-                    <tr><td>Kantor Cabang:</td><td><?= htmlspecialchars($kurir['nama_cabang']) ?></td></tr>
-                    <tr><td>Status:</td><td><?= htmlspecialchars($kurir['status_keaktifan']) ?></td></tr>
+                    <tr>
+                        <td width="200"><i class="fas fa-user me-2"></i>Nama:</td>
+                        <td><?= htmlspecialchars($kurir['nama_kurir']) ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-phone me-2"></i>Telepon:</td>
+                        <td><?= htmlspecialchars($kurir['no_telepon']) ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-building me-2"></i>Kantor Cabang:</td>
+                        <td><?= htmlspecialchars($kurir['nama_cabang']) ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fas fa-toggle-on me-2"></i>Status:</td>
+                        <td><?= htmlspecialchars($kurir['status_keaktifan']) ?></td>
+                    </tr>
                 </table>
             </div>
         </div>
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h3 class="card-title">Kendaraan yang Digunakan</h3>
-            </div>
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-truck me-2"></i>Kendaraan yang Digunakan
+                </h5>
                 <?php if ($kurir['nama_kendaraan']): ?>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Nama Kendaraan</th>
-                            <th>Jenis Kendaraan</th>
-                            <th>Kapasitas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><?= htmlspecialchars($kurir['nama_kendaraan']) ?></td>
-                            <td><?= htmlspecialchars($kurir['jenis_kendaraan']) ?></td>
-                            <td><?= htmlspecialchars($kurir['kapasitas']) ?></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-car me-2"></i>Nama Kendaraan</th>
+                                <th><i class="fas fa-tag me-2"></i>Jenis Kendaraan</th>
+                                <th><i class="fas fa-weight me-2"></i>Kapasitas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?= htmlspecialchars($kurir['nama_kendaraan']) ?></td>
+                                <td><?= htmlspecialchars($kurir['jenis_kendaraan']) ?></td>
+                                <td><?= htmlspecialchars($kurir['kapasitas']) ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <?php else: ?>
-                    <p class="text-muted">Tidak ada kendaraan yang ditugaskan</p>
+                    <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Tidak ada kendaraan yang ditugaskan</p>
                 <?php endif; ?>
             </div>
         </div>
 
-        <div class="card mb-4">
-            <div class="card-header">
-                <h3 class="card-title">Pengiriman yang Ditangani</h3>
-            </div>
+        <div class="card shadow-sm mb-4">
             <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <i class="fas fa-shipping-fast me-2"></i>Pengiriman yang Ditangani
+                </h5>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>ID Pengiriman</th>
-                                <th>ID Pesanan</th>
-                                <th>Tanggal Kirim</th>
-                                <th>Tanggal Sampai</th>
-                                <th>Status Pengiriman</th>
+                                <th><i class="fas fa-hashtag me-2"></i>ID Pengiriman</th>
+                                <th><i class="fas fa-box me-2"></i>ID Pesanan</th>
+                                <th><i class="fas fa-calendar me-2"></i>Tanggal Kirim</th>
+                                <th><i class="fas fa-calendar-check me-2"></i>Tanggal Sampai</th>
+                                <th><i class="fas fa-info-circle me-2"></i>Status Pengiriman</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,7 +176,9 @@ $pengiriman = mysqli_stmt_get_result($stmt_pengiriman);
             </div>
         </div>
 
-        <a href="list.php" class="btn btn-secondary">Kembali ke List Kurir</a>
+        <a href="list.php" class="btn btn-secondary shadow-sm">
+            <i class="fa fa-arrow-left me-2"></i>Kembali ke List Kurir
+        </a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -2,9 +2,12 @@
 include '../config.php';
 session_start();
 
-if (!isset($_SESSION['id_cabang'])) {
-    header("Location: ../login.php");
-    exit;
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: ../index.php");
+    exit();
 }
 
 $is_kantor_pusat = ($_SESSION['id_cabang'] == 'KC001');
@@ -46,34 +49,52 @@ if ($is_kantor_pusat) {
 <head>
     <meta charset="UTF-8">
     <title>Tambah Kendaraan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!--Bootstrap-->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link rel="stylesheet" href="../assets/font-awesome/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="../dashboard.php"><i class="fa fa-truck"></i> Padjadjaran Express</a>
+            <a class="navbar-brand d-flex align-items-center" href="../dashboard.php">
+                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="30" class="me-2">
+                <span>Padjadjaran Express</span>
+            </a>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title"><i class="fa fa-plus"></i> Tambah Kendaraan</h2>
+
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="border-bottom pb-2">
+                    <i class="fas fa-plus me-2"></i>Tambah Kendaraan
+                </h2>
             </div>
+        </div>
+
+        <div class="card shadow-sm">
             <div class="card-body">
                 <form method="post">
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-id-card"></i> ID Kendaraan:</label>
+                        <label class="form-label">
+                            <i class="fa fa-id-card me-2"></i>ID Kendaraan:
+                        </label>
                         <input type="text" name="id_kendaraan" class="form-control" required
-                               pattern="KN[0-9]{3}" title="Format: KN001, KN002, dst">
+                               pattern="KD[0-9]{3}" title="Format: Kd001, KD002, dst">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-truck"></i> Nama Kendaraan:</label>
+                        <label class="form-label">
+                            <i class="fa fa-truck me-2"></i>Nama Kendaraan:
+                        </label>
                         <input type="text" name="nama_kendaraan" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-tags"></i> Jenis Kendaraan:</label>
+                        <label class="form-label">
+                            <i class="fa fa-tags me-2"></i>Jenis Kendaraan:
+                        </label>
                         <select name="jenis_kendaraan" class="form-select" required>
                             <option value="">Pilih Jenis Kendaraan</option>
                             <option value="Motor">Motor</option>
@@ -82,12 +103,16 @@ if ($is_kantor_pusat) {
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-weight-scale"></i> Kapasitas (kg):</label>
+                        <label class="form-label">
+                            <i class="fa fa-weight-scale me-2"></i>Kapasitas (kg):
+                        </label>
                         <input type="number" step="0.1" name="kapasitas" class="form-control" required>
                     </div>
                     <?php if ($is_kantor_pusat): ?>
                     <div class="mb-3">
-                        <label class="form-label"><i class="fa fa-building"></i> Kantor Cabang:</label>
+                        <label class="form-label">
+                            <i class="fa fa-building me-2"></i>Kantor Cabang:
+                        </label>
                         <select name="id_cabang" class="form-select" required>
                             <option value="">Pilih Kantor Cabang</option>
                             <?php while ($cabang = mysqli_fetch_assoc($result_cabang)): ?>
@@ -98,12 +123,14 @@ if ($is_kantor_pusat) {
                         </select>
                     </div>
                     <?php endif; ?>
-                    <button type="submit" name="submit" class="btn btn-primary">
-                        <i class="fa fa-floppy-disk"></i> Simpan
-                    </button>
-                    <a href="list.php" class="btn btn-secondary">
-                        <i class="fa fa-arrow-left"></i> Kembali
-                    </a>
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="submit" class="btn btn-primary shadow-sm">
+                            <i class="fa fa-save me-2"></i>Simpan
+                        </button>
+                        <a href="list.php" class="btn btn-secondary shadow-sm">
+                            <i class="fa fa-arrow-left me-2"></i>Kembali
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>

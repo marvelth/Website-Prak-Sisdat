@@ -2,10 +2,14 @@
 include '../config.php';
 session_start();
 
-if (!isset($_SESSION['id_cabang']) || $_SESSION['id_cabang'] !== 'KC001') {
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
     header("Location: ../index.php");
     exit();
 }
+
 
 if (isset($_POST['submit'])) {
     $id_cabang = mysqli_real_escape_string($conn, $_POST['id_cabang']);
@@ -35,13 +39,20 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <title>Tambah Kantor Cabang</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!--Bootstrap-->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <!--Fontawesome-->
+    <link rel="stylesheet" href="../assets/font-awesome/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="../dashboard.php"><i class="fa fa-building"></i> Padjadjaran Express</a>
+            <a class="navbar-brand d-flex align-items-center" href="../dashboard.php">
+                <img src="../assets/img/logo.png" alt="Padjadjaran Express" height="30" class="me-2">
+                <span>Padjadjaran Express</span>
+            </a>
         </div>
     </nav>
 

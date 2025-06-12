@@ -1,5 +1,5 @@
 <?php
-session_start();
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,12 +8,16 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Padjadjaran Express</title>
     <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <!--Fontawesome-->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/font-awesome/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <div class="container mt-5">
+        <h1 class="main-title text-center">PADJADJARAN EXPRESS</h1>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -40,6 +44,9 @@ session_start();
                         </form>
                     </div>
                 </div>
+                <footer class="text-center">
+                    <p>&copy; 2025 Padjadjaran Express. All rights reserved.</p>
+                </footer>    
             </div>
         </div>
     </div>

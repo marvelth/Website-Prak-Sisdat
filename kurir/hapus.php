@@ -7,6 +7,14 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+if (!isset($_SESSION['id_cabang']) || empty($_SESSION['id_cabang'])) {
+    session_unset();
+    session_destroy();
+
+    header("Location: ../index.php");
+    exit();
+}
+
 $id_kurir = mysqli_real_escape_string($conn, $_GET['id']);
 
 // Check if courier has active deliveries
