@@ -143,8 +143,8 @@ $result_kendaraan = mysqli_stmt_get_result($stmt_kendaraan);
                             <i class="fa fa-toggle-on me-2"></i>Status:
                         </label>
                         <select name="status_keaktifan" class="form-select" required>
-                            <option value="Aktif" <?= $kurir['status_keaktifan'] == 'Aktif' ? 'selected' : '' ?>>Aktif</option>
-                            <option value="Tidak Aktif" <?= $kurir['status_keaktifan'] == 'Tidak Aktif' ? 'selected' : '' ?>>Tidak Aktif</option>
+                            <option value="1" <?= $kurir['status_keaktifan'] == '1' ? 'selected' : '' ?>>Aktif</option>
+                            <option value="0" <?= $kurir['status_keaktifan'] == '0' ? 'selected' : '' ?>>Tidak Aktif</option>
                         </select>
                     </div>
                     <div class="mb-3">

@@ -29,11 +29,16 @@ $sql_total_pengirimanaktif = $is_kantor_pusat ?
      JOIN kurir k ON pg.id_kurir = k.id_kurir 
      WHERE k.id_cabang = ? AND pg.status_pengiriman = 'Dalam Perjalanan'";
 
+$sql_total_kurir = $is_kantor_pusat ? 
+    "SELECT COUNT(*) AS total FROM kurir WHERE status_keaktifan = 1" :
+    "SELECT COUNT(*) AS total FROM kurir WHERE id_cabang = ? AND status_keaktifan = 1";
+
 // Eksekusi query dengan parameter untuk kantor cabang
 if ($is_kantor_pusat) {
     $query_total_pelanggan = mysqli_query($conn, $sql_total_pelanggan);
     $query_total_pesanan = mysqli_query($conn, $sql_total_pesanan);
     $query_total_pengirimanaktif = mysqli_query($conn, $sql_total_pengirimanaktif);
+    $query_total_kurir = mysqli_query($conn, $sql_total_kurir);
 } else {
     $stmt = mysqli_prepare($conn, $sql_total_pelanggan);
     mysqli_stmt_bind_param($stmt, "s", $_SESSION['id_cabang']);
@@ -49,6 +54,11 @@ if ($is_kantor_pusat) {
     mysqli_stmt_bind_param($stmt, "s", $_SESSION['id_cabang']);
     mysqli_stmt_execute($stmt);
     $query_total_pengirimanaktif = mysqli_stmt_get_result($stmt);
+
+    $stmt = mysqli_prepare($conn, $sql_total_kurir);
+    mysqli_stmt_bind_param($stmt, "s", $_SESSION['id_cabang']);
+    mysqli_stmt_execute($stmt);
+    $query_total_kurir = mysqli_stmt_get_result($stmt);
 }
 
 //Query untuk menampilkan nama sesuai cabang
@@ -62,6 +72,7 @@ $nama_kantor = mysqli_fetch_assoc($result_nama_kantor)['nama_cabang'];
 $pelanggan = mysqli_fetch_assoc($query_total_pelanggan)['total'];
 $pesanan_hari_ini = mysqli_fetch_assoc($query_total_pesanan)['total'];
 $pengiriman_aktif = mysqli_fetch_assoc($query_total_pengirimanaktif)['total'];
+$kurir_aktif = mysqli_fetch_assoc($query_total_kurir)['total'];
 ?>
 
 <!DOCTYPE html>
@@ -150,8 +161,8 @@ $pengiriman_aktif = mysqli_fetch_assoc($query_total_pengirimanaktif)['total'];
             </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-4">
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
                 <div class="card border-0 shadow-sm h-100 bg-gradient card-stats-primary">
                     <div class="card-body text-white">
                         <div class="d-flex justify-content-between align-items-start">
@@ -166,7 +177,25 @@ $pengiriman_aktif = mysqli_fetch_assoc($query_total_pengirimanaktif)['total'];
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100 bg-gradient card-stats-primary">
+                    <div class="card-body text-white">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="card-title text-white-50">Total Kurir</h6>
+                                <h2 class="display-6 fw-bold mb-0"><?php echo $kurir_aktif; ?></h2>
+                            </div>
+                            <div class="rounded-circle bg-white p-3">
+                                <i class="fas fa-user fa-2x" style="color: #827397;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
                 <div class="card border-0 shadow-sm h-100 bg-gradient card-stats-secondary">
                     <div class="card-body text-white">
                         <div class="d-flex justify-content-between align-items-start">
@@ -181,7 +210,7 @@ $pengiriman_aktif = mysqli_fetch_assoc($query_total_pengirimanaktif)['total'];
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card border-0 shadow-sm h-100 bg-gradient card-stats-accent">
                     <div class="card-body text-white">
                         <div class="d-flex justify-content-between align-items-start">
